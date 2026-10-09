@@ -21,6 +21,9 @@ dev = [
     "pytest-asyncio>=1.4",
 ]
 
+[project.scripts]
+ytmtui = "ytmtui.__main__:main"
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["ytmtui*"]
