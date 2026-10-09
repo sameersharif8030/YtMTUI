@@ -1,0 +1,54 @@
+import asyncio
+from textual.widgets import Input, ListView
+from ytmtui.app import YtMTUI
+from ytmtui.ytmusic import Track, YTMusicService
+
+async def test():
+    app = YtMTUI(volume=0)
+    async with app.run_test(size=(120, 40)) as pilot:
+        await pilot.pause()
+        print('App mounted')
+        
+        library = app.query_one('#library')
+        search_results_list = library.query_one('#search-results-list')
+        
+        library.active_tab = 'search'
+        await asyncio.sleep(0.01)
+        
+        from ytmtui.ytmusic import Track
+        fake_tracks = [Track(id=f'test{i}', title=f'Song {i}', artist=f'Artist {i}', album='Album', duration_s=90 + i) for i in range(5)]
+        
+        library.set_search_results(fake_tracks)
+        print('search_results:', len(library.search_results))
+        
+        # Debug render_search_results step by step
+        print('Calling render_search_results...')
+        
+        if not library._search_results_list:
+            print('_search_results_list is None')
+            return
+        
+        print('_search_results_list:', library._search_results_list)
+        library._search_results_list.clear()
+        print('After clear, children:', len(library._search_results_list.children))
+        
+        from ytmtui.ui.widgets import _track_item
+        items = [_track_item(t, current=False) for t in fake_tracks]
+        print('Items to mount:', len(items))
+        
+        import asyncio
+        await asyncio.sleep(0.2)
+        print('After sleep, children:', len(library._search_results_list.children))
+        
+        try:
+            mount_result = library._search_results_list.mount(*items)
+            print('Mount result:', mount_result)
+            await mount_result
+            print('Mount completed')
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+        
+        print('Children count after mount:', len(library._search_results_list.children))
+
+asyncio.run(test())

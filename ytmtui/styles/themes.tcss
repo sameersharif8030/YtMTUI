@@ -1,0 +1,2 @@
+/* Theme palette values are supplied at runtime by ThemeManager as Textual CSS variables. */
+/* base.tcss consumes those variables so cycling themes recolors the whole dashboard. */

@@ -1,0 +1,517 @@
+/* Catppuccin Mocha dashboard, proportioned to the supplied HTML mock. */
+Screen {
+    width: 100%;
+    height: 100%;
+    layout: vertical;
+    background: $bg;
+    color: $text;
+}
+
+#app-grid {
+    width: 100%;
+    height: 1fr;
+    layout: horizontal;
+    padding: 1;
+}
+
+/* Navigation rail: fixed width and full dashboard height. */
+#sidebar {
+    width: 26;
+    min-width: 26;
+    height: 100%;
+    border: round $accent;
+    padding: 1;
+    background: $surface;
+}
+
+#sidebar-content {
+    width: 100%;
+    height: 1fr;
+    layout: vertical;
+}
+
+#sidebar-logo {
+    color: $accent;
+    text-style: bold;
+    margin-bottom: 1;
+}
+
+#theme-status,
+.sidebar-stat {
+    color: $muted;
+    height: auto;
+}
+
+#search {
+    width: 100%;
+    height: 3;
+    background: $surface_alt;
+    border: solid $border;
+    color: $text;
+    margin: 1 0;
+}
+
+#search:focus {
+    border: solid $accent;
+}
+
+.sidebar-nav-btn {
+    width: 100%;
+    height: 3;
+    margin-bottom: 1;
+    background: $surface;
+    color: $text;
+    border: none;
+    content-align: left middle;
+}
+
+.sidebar-nav-btn.current {
+    background: $accent;
+    color: $active_fg;
+    text-style: bold;
+}
+
+#sidebar-spacer {
+    height: 1fr;
+}
+
+#workspace {
+    width: 1fr;
+    height: 100%;
+    layout: vertical;
+    padding-left: 1;
+}
+
+/* The two workspace rows share available height equally. */
+#top-half,
+#bottom-half {
+    width: 100%;
+    height: 1fr;
+    min-height: 8;
+}
+
+#top-half {
+    border: round $accent;
+    padding: 1;
+    margin-bottom: 1;
+    background: $surface;
+}
+
+#hero,
+#hero-content {
+    width: 100%;
+    height: 1fr;
+}
+
+#hero-content {
+    layout: vertical;
+}
+
+#hero-main {
+    width: 100%;
+    height: 1fr;
+    layout: horizontal;
+    align: center middle;
+}
+
+#timeline-row {
+    width: 100%;
+    height: 1;
+    min-height: 1;
+    layout: horizontal;
+    align: left middle;
+}
+
+.timeline-time {
+    width: auto;
+    min-width: 5;
+    height: 1;
+    color: $muted;
+    content-align: center middle;
+}
+
+#timeline-bar {
+    width: 1fr;
+    height: 1;
+    min-width: 4;
+    content-align: left middle;
+}
+
+#visualizer-container {
+    width: 1fr;
+    height: 100%;
+    content-align: center middle;
+}
+
+#visualizer {
+    width: 100%;
+    height: 1fr;
+    content-align: center middle;
+    color: $accent;
+}
+
+#mode-badge {
+    height: 1;
+    content-align: center middle;
+    color: $accent;
+}
+
+#metadata-container {
+    width: 2fr;
+    height: 100%;
+    content-align: left middle;
+}
+
+#track-title {
+    width: 100%;
+    height: auto;
+    min-height: 1;
+    color: $accent;
+    text-style: bold;
+}
+
+#track-artist {
+    width: 100%;
+    height: auto;
+    color: $muted;
+}
+
+#track-album-year {
+    width: 100%;
+    height: auto;
+    color: $muted;
+}
+
+#status-row {
+    width: 100%;
+    height: auto;
+    margin-top: 1;
+}
+
+#playback-status {
+    color: $green;
+    text-style: bold;
+}
+
+#track-quality {
+    color: $muted;
+}
+
+#spectrum-container {
+    width: 1fr;
+    height: 100%;
+    content-align: center middle;
+}
+
+#cover-container {
+    width: 1fr;
+    min-width: 12;
+    height: 100%;
+    content-align: center middle;
+    border-left: solid $surface_alt;
+    padding-left: 1;
+}
+
+#cover-art {
+    width: 100%;
+    height: 100%;
+    content-align: center middle;
+    overflow: hidden;
+}
+
+#spectrum-bars {
+    width: 100%;
+    height: auto;
+    content-align: center middle;
+    color: $green;
+    text-style: bold;
+}
+
+#bottom-half {
+    layout: horizontal;
+}
+
+#library,
+#queue {
+    width: 1fr;
+    height: 100%;
+    min-width: 0;
+    padding: 1;
+    background: $surface;
+}
+
+#library {
+    border: round $green;
+    margin-right: 1;
+}
+
+#queue {
+    border: round $queue;
+}
+
+#library-content,
+#library-panes,
+#queue-content {
+    width: 100%;
+    height: 1fr;
+}
+
+#library-header,
+#queue-header {
+    width: 100%;
+    height: auto;
+    min-height: 2;
+}
+
+#library-title,
+#queue-title {
+    color: $green;
+    text-style: bold;
+}
+
+#queue-title {
+    color: $queue;
+}
+
+#library-tabs,
+#queue-controls {
+    width: auto;
+    height: auto;
+    align: right middle;
+}
+
+.library-tab,
+.queue-btn {
+    min-width: 0;
+    height: 2;
+    margin: 0 1 0 0;
+    padding: 0 1;
+    background: $surface_alt;
+    color: $text;
+    border: none;
+}
+
+.library-tab.current {
+    background: $green;
+    color: $active_fg;
+    text-style: bold;
+}
+
+.library-pane {
+    width: 100%;
+    height: 1fr;
+}
+
+.library-section-title {
+    height: auto;
+    color: $green;
+    text-style: bold;
+}
+
+.list-view,
+.library-list,
+.queue-list {
+    width: 100%;
+    height: 1fr;
+    background: transparent;
+    border: none;
+}
+
+/* Current item plus about five upcoming tracks; retain full-list scrolling. */
+#queue-list {
+    height: 1fr;
+    max-height: 6;
+    overflow-y: scroll;
+    scrollbar-color: $queue;
+    scrollbar-background: $surface;
+}
+
+.list-item,
+ListView > ListItem {
+    padding: 0 1;
+    height: 1;
+}
+
+.list-item.--highlight {
+    background: $border;
+    color: $queue;
+}
+
+.list-item.current,
+ListView > ListItem.current {
+    background: $queue;
+    color: $active_fg;
+    text-style: bold;
+}
+
+.empty-state,
+#queue-empty {
+    width: 100%;
+    height: auto;
+    color: $muted;
+    padding: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Status stays available to the app but does not add an extra mock-breaking row. */
+#status,
+Header {
+    display: none;
+}
+
+#footer {
+    dock: bottom;
+    width: 100%;
+    height: 3;
+    padding: 0 1;
+    background: $footer_bg;
+    border: round $surface_alt;
+}
+
+#footer-content {
+    width: 100%;
+    height: 100%;
+    layout: horizontal;
+    align: left middle;
+}
+
+#progress-container {
+    width: 1fr;
+    height: 100%;
+    layout: horizontal;
+    align: left middle;
+}
+
+#progress-time,
+#progress-time-right {
+    width: auto;
+    color: $muted;
+}
+
+#progress-bar {
+    width: 1fr;
+    color: $accent;
+    background: $surface_alt;
+}
+
+#volume-container {
+    width: 20;
+    height: 100%;
+    layout: horizontal;
+    align: left middle;
+    padding-left: 1;
+}
+
+#volume-label,
+#volume-percent {
+    width: auto;
+    color: $green;
+}
+
+#volume-bar {
+    width: 1fr;
+    margin: 0 1;
+    color: $green;
+    background: $surface_alt;
+}
+
+#keycap-hints-container {
+    width: auto;
+    max-width: 1fr;
+    height: 100%;
+    layout: horizontal;
+    align: right middle;
+}
+
+#footer .keycap {
+    height: 2;
+    min-width: 4;
+    border: none;
+    content-align: center middle;
+}
+
+.keycap {
+    background: $accent;
+    border: none;
+    color: $active_fg;
+    padding: 0 1;
+    margin: 0 1;
+    text-style: bold;
+    min-width: 4;
+    height: 2;
+    content-align: center middle;
+}
+
+.keycap-label {
+    color: $text;
+    margin-left: 1;
+}
+
+Screen.compact #sidebar {
+    display: none;
+}
+
+Screen.compact #cover-container {
+    display: none;
+}
+
+Screen.compact #workspace {
+    padding-left: 0;
+}
+
+Screen.mini #bottom-half,
+Screen.mini #sidebar {
+    display: none;
+}
+
+Screen.mini #top-half {
+    height: 6;
+    min-height: 6;
+    margin-bottom: 0;
+    padding: 0 1;
+}
+
+Screen.mini #hero-content {
+    height: 1fr;
+    layout: vertical;
+}
+
+Screen.mini #hero-main {
+    height: 2;
+    min-height: 2;
+}
+
+Screen.mini #visualizer-container,
+Screen.mini #spectrum-container,
+Screen.mini #cover-container,
+Screen.mini #track-album-year,
+Screen.mini #status-row,
+Screen.mini #footer {
+    display: none;
+}
+
+Screen.mini #metadata-container {
+    width: 1fr;
+    height: 2;
+    content-align: left middle;
+}
+
+Screen.mini #track-title,
+Screen.mini #track-artist {
+    height: 1;
+    min-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+Screen.mini #timeline-row {
+    height: 1;
+    min-height: 1;
+}
+
+Screen.mini .timeline-time {
+    min-width: 5;
+}

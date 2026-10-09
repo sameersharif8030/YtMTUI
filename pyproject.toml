@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ytmtui"
+version = "0.1.0"
+description = "YouTube Music Terminal UI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "textual>=8.2,<9",
+    "ytmusicapi>=1.12,<2",
+    "yt-dlp>=2026.08.19",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0",
+    "pytest-asyncio>=1.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ytmtui*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

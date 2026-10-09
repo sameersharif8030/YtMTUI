@@ -1,0 +1,7 @@
+textual<9,>=8.2
+ytmusicapi<2,>=1.12
+yt-dlp>=2026.08.19
+
+[dev]
+pytest>=9.0
+pytest-asyncio>=1.4

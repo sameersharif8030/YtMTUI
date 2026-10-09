@@ -1,0 +1,167 @@
+Metadata-Version: 2.4
+Name: ytmtui
+Version: 0.1.0
+Summary: YouTube Music Terminal UI
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: textual<9,>=8.2
+Requires-Dist: ytmusicapi<2,>=1.12
+Requires-Dist: yt-dlp>=2026.08.19
+Provides-Extra: dev
+Requires-Dist: pytest>=9.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=1.4; extra == "dev"
+
+# YtMTUI — YouTube Music Terminal UI
+
+A lightweight, keyboard-driven terminal music player for YouTube / YouTube Music written in Python + Textual.
+
+## Features
+- Play YouTube / YouTube Music tracks, playlists, and liked songs
+- Search YouTube Music catalog
+- Browse your library playlists and liked songs
+- Shuffle with history-aware previous/next
+- Auto-mix (track radio) when queue ends
+- Local history cache (metadata only, up to 500 entries)
+- mpv-backed playback with auto-reconnect
+- Responsive layout: mini-mode, stacked, compact
+- Keyboard-first controls
+
+## Requirements
+- Python 3.12+
+- mpv (with yt-dlp support)
+- yt-dlp
+- deno (for yt-dlp JS challenges)
+- scoop (recommended on Windows for dependency management)
+
+## Installation
+```bash
+git clone <repo>
+cd YtMTUI
+python -m pip install -r requirements.txt
+```
+
+### Windows (scoop)
+```bash
+scoop install python mpv yt-dlp deno
+python -m pip install textual ytmusicapi
+```
+
+## Authentication (Required)
+
+YouTube Music requires browser authentication. The app uses a `browser.json` file containing your session cookies.
+
+### Initial Setup
+1. Open YouTube Music in Chrome/Edge
+2. Open DevTools (F12) → Network tab
+3. Filter by "browse" or "playlist" requests
+4. Click any request → Headers → Request Headers
+5. Copy **all** headers (including `cookie:`, `x-goog-authuser`, etc.)
+6. Save to `_headers_raw.txt` in project root
+7. Run:
+   ```bash
+   python setup_browser_auth.py
+   ```
+   This creates `browser.json` from the raw headers.
+
+### Refreshing Expired Session
+When you see: `Session expired. Run setup_browser_auth.py to refresh (see README.md)`
+1. Repeat steps 1-6 above (get fresh headers from browser)
+2. Overwrite `_headers_raw.txt`
+3. Run `python setup_browser_auth.py` again
+4. The new `browser.json` will be created automatically
+
+**Location of setup script:** `C:\D copy\YtMTUI\setup_browser_auth.py`
+
+## Usage
+```bash
+python -m ytmtui
+```
+
+### Keybindings
+
+| Key | Action |
+|-----|--------|
+| `/` | Focus search input |
+| `Enter` (search) | Play track / add to queue |
+| `Enter` (playlist) | Open playlist |
+| `Enter` (track) | Play track |
+| `P` / `p` | Show playlists |
+| `L` | Load liked songs |
+| `H` | Show play history |
+| `Escape` | Go back / focus queue |
+| `space` | Pause/Resume |
+| `n` | Next track |
+| `p` | Previous track |
+| `[` | Seek -5s |
+| `]` | Seek +5s |
+| `+` / `-` | Volume up/down |
+| `s` | Toggle shuffle |
+| `c` | Clear queue |
+| `d` | Remove selected from queue |
+| `r` | Retry current track |
+| `m` | Toggle mini mode |
+| `q` | Quit |
+
+### Browser Modes
+- **Search** — Default mode, search input visible
+- **Playlists** — Your library playlists (press `P`)
+- **Playlist Tracks** — Tracks inside a playlist (press `Enter` on playlist)
+- **History** — Recently played tracks (press `H`)
+
+Press `Escape` to go back one level.
+
+## Auto-Mix (Track Radio)
+When the queue ends and `auto_mix` is enabled (default), the player fetches a "watch playlist" radio based on the last played track and continues playback with 20 related tracks.
+
+Toggle with `A` key (not yet bound — use `--auto-mix` config in future).
+
+## History Cache
+- File: `history.json` (project root, gitignored)
+- Stores up to 500 recently played tracks (metadata only)
+- Press `H` to view history
+- Press `Enter` on history entry to play
+- **Offline note:** History stores metadata only. Actual playback requires network to fetch stream URLs. True offline playback would require audio file caching (planned: `--download` flag).
+
+## Configuration
+Edit `ytmtui/config.py`:
+- `DEFAULT_VOLUME` (0-100)
+- `MAX_STREAM_RETRIES` (stream refresh attempts)
+- `YTDLP_FORMAT` (yt-dlp format selector)
+
+## Architecture
+```
+ytmtui/
+├── app.py              # Main Textual app, UI, keybindings
+├── config.py           # Paths, constants, spawn_env()
+├── history.py          # Local history cache (JSON)
+├── layout.py           # LayoutEngine (mini/compact/stacked)
+├── mpv_ipc.py          # MPVIPC + MPVConnectionManager (auto-reconnect)
+├── player.py           # PlaybackController (FSM, queue, radio, history)
+├── ytmusic.py          # YTMusicService (search, playlists, radio)
+└── ui/widgets.py       # NowPlaying widget (progress, metadata)
+```
+
+## Troubleshooting
+
+### mpv not found
+Ensure mpv is in PATH. On Windows with scoop: `scoop install mpv`
+
+### yt-dlp fails with 403
+Update yt-dlp: `scoop update yt-dlp` or `python -m pip install -U yt-dlp`
+
+### Stale D:\ entries in PATH (Windows)
+If `python`/`mpv`/`yt-dlp` fail with "The file cannot be accessed by the system":
+```powershell
+# Run in elevated PowerShell
+$m = [Environment]::GetEnvironmentVariable('Path','Machine')
+$dead = @('D:\python exe\Scripts','D:\python exe','D:\Git\cmd')
+$clean = (($m -split ';') | Where-Object { $_.Trim() -and ($dead -notcontains $_.Trim().TrimEnd('\')) }) -join ';'
+[Environment]::SetEnvironmentVariable('Path', $clean, 'Machine')
+```
+Then open a **new** terminal.
+
+### "Auth unavailable" / Session expired
+Run `python setup_browser_auth.py` with fresh headers (see Authentication section).
+
+## License
+MIT
